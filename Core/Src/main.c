@@ -25,6 +25,8 @@
 
 #include "i2c-lcd.h"
 
+#include "displayDashStateHandler.h"
+
 #include "stdio.h"
 #include "string.h"
 
