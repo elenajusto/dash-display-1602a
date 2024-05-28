@@ -78,6 +78,12 @@ static void MX_I2C1_Init(void);
 	int row=0;
 	int col=0;
 
+	/* I2C SPL06 Variables */
+	SPL06_007 pressureSensor;
+
+	/* UART Variables */
+	uint8_t msg[40];
+
 /* USER CODE END 0 */
 
 /**
@@ -131,12 +137,41 @@ int main(void)
 
 	  lcd_clear ();
 
+	  /* Initialise pressure sensor */
+	  uint8_t ret = SPL06_007_Initialise( &pressureSensor, &hi2c1 );
+	  if (ret == 0){
+		  // Success
+		  sprintf(msg, "Successfully Connected to SPL006. \r\n");
+		  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+	  } else {
+		  // Errors
+		  sprintf(msg, "Number of errors: %d\r\n", ret);
+		  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+	  }
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  /* Reading Raw Temperature */
+	  uint8_t TMP_B2 = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_TMP_B2_ADDR);
+	  uint8_t TMP_B1 = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_TMP_B1_ADDR);
+	  uint8_t TMP_B0 = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_TMP_B0_ADDR);
+	  sprintf(msg, "RAW TEMP: 0x%02X 0x%02X 0x%02X\r\n", TMP_B2, TMP_B1, TMP_B0);
+	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+
+	  /* LCD Messaging */
+	  lcd_put_cur(0, 0);
+	  lcd_send_string ("RAW TEMP:");
+	  lcd_put_cur(1, 0);
+	  sprintf(msg, "0x%02X 0x%02X 0x%02X", TMP_B2, TMP_B1, TMP_B0);
+	  lcd_send_string (msg);
+	  HAL_Delay(1000);
+	  lcd_clear ();
+
+	  HAL_Delay(500);
 
     /* USER CODE END WHILE */
 
