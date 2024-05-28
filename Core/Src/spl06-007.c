@@ -108,5 +108,3 @@ HAL_StatusTypeDef SPL06_007_WriteRegister( SPL06_007 *dev, uint8_t reg, uint8_t 
 
 	return HAL_I2C_Mem_Write(dev->i2cHandle, SPL06007_I2C_ADDR, reg, I2C_MEMADD_SIZE_8BIT, data, 1, HAL_MAX_DELAY);
 }
-
-/* FUNCTION DEFINITIONS */

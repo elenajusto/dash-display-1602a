@@ -1,4 +1,3 @@
-"./Core/Src/displayDashStateHandler.o"
 "./Core/Src/i2c-lcd.o"
 "./Core/Src/main.o"
 "./Core/Src/spl06-007.o"
