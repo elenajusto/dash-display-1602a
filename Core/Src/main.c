@@ -74,6 +74,10 @@ static void MX_I2C1_Init(void);
 	uint8_t StartMSG[] = "Starting I2C Scanning: \r\n";
 	uint8_t EndMSG[] = "Done! \r\n\r\n";
 
+	/* I2C LCD Variables */
+	int row=0;
+	int col=0;
+
 /* USER CODE END 0 */
 
 /**
@@ -108,7 +112,24 @@ int main(void)
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
 
+  	  /* Start I2C Scan */
   	  i2cScanner();
+
+  	  /* LCD Init */
+  	  lcd_init();
+
+  	  /* LCD Messaging */
+	  lcd_send_string ("HELLO WORLD");
+
+	  HAL_Delay(1000);
+
+	  lcd_put_cur(1, 0);
+
+	  lcd_send_string("from CTECH");
+
+	  HAL_Delay(2000);
+
+	  lcd_clear ();
 
   /* USER CODE END 2 */
 
@@ -116,6 +137,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
