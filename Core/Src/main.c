@@ -125,16 +125,11 @@ int main(void)
   	  lcd_init();
 
   	  /* LCD Messaging */
-	  lcd_send_string ("HELLO WORLD");
-
-	  HAL_Delay(1000);
-
+	  lcd_send_string ("Design Challenge");
+	  HAL_Delay(500);
 	  lcd_put_cur(1, 0);
-
-	  lcd_send_string("from CTECH");
-
+	  lcd_send_string("Vehicle Online");
 	  HAL_Delay(2000);
-
 	  lcd_clear ();
 
 	  /* Initialise pressure sensor */
@@ -164,9 +159,9 @@ int main(void)
 
 	  /* LCD Messaging */
 	  lcd_put_cur(0, 0);
-	  lcd_send_string ("RAW TEMP:");
+	  lcd_send_string ("State A");
 	  lcd_put_cur(1, 0);
-	  sprintf(msg, "0x%02X 0x%02X 0x%02X", TMP_B2, TMP_B1, TMP_B0);
+	  sprintf(msg, "Temp:%02XH%02XH%02XH", TMP_B2, TMP_B1, TMP_B0);
 	  lcd_send_string (msg);
 	  HAL_Delay(1000);
 	  lcd_clear ();

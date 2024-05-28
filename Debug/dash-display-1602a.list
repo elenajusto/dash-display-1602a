@@ -7,23 +7,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00004d8c  080000bc  080000bc  000100bc  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       00000164  08004e48  08004e48  00014e48  2**2
+  2 .rodata       0000016c  08004e48  08004e48  00014e48  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  08004fac  08004fac  00020088  2**0
+  3 .ARM.extab    00000000  08004fb4  08004fb4  00020088  2**0
                   CONTENTS
-  4 .ARM          00000008  08004fac  08004fac  00014fac  2**2
+  4 .ARM          00000008  08004fb4  08004fb4  00014fb4  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  5 .preinit_array 00000000  08004fb4  08004fb4  00020088  2**0
+  5 .preinit_array 00000000  08004fbc  08004fbc  00020088  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  08004fb4  08004fb4  00014fb4  2**2
+  6 .init_array   00000004  08004fbc  08004fbc  00014fbc  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  7 .fini_array   00000004  08004fb8  08004fb8  00014fb8  2**2
+  7 .fini_array   00000004  08004fc0  08004fc0  00014fc0  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  8 .data         00000088  20000000  08004fbc  00020000  2**2
+  8 .data         00000088  20000000  08004fc4  00020000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          000002a8  20000088  08005044  00020088  2**2
+  9 .bss          000002a8  20000088  0800504c  00020088  2**2
                   ALLOC
- 10 ._user_heap_stack 00000600  20000330  08005044  00020330  2**0
+ 10 ._user_heap_stack 00000600  20000330  0800504c  00020330  2**0
                   ALLOC
  11 .ARM.attributes 00000028  00000000  00000000  00020088  2**0
                   CONTENTS, READONLY
@@ -1142,14 +1142,14 @@ int main(void)
  800086a:	f7ff ff9b 	bl	80007a4 <lcd_init>
 
   	  /* LCD Messaging */
-	  lcd_send_string ("HELLO WORLD");
+	  lcd_send_string ("Design Challenge");
  800086e:	4b52      	ldr	r3, [pc, #328]	; (80009b8 <main+0x16c>)
  8000870:	0018      	movs	r0, r3
  8000872:	f7ff ffd5 	bl	8000820 <lcd_send_string>
 
-	  HAL_Delay(1000);
+	  HAL_Delay(500);
  8000876:	23fa      	movs	r3, #250	; 0xfa
- 8000878:	009b      	lsls	r3, r3, #2
+ 8000878:	005b      	lsls	r3, r3, #1
  800087a:	0018      	movs	r0, r3
  800087c:	f000 fd2a 	bl	80012d4 <HAL_Delay>
 
@@ -1158,7 +1158,7 @@ int main(void)
  8000882:	2001      	movs	r0, #1
  8000884:	f7ff ff6f 	bl	8000766 <lcd_put_cur>
 
-	  lcd_send_string("from CTECH");
+	  lcd_send_string("Vehicle Online");
  8000888:	4b4c      	ldr	r3, [pc, #304]	; (80009bc <main+0x170>)
  800088a:	0018      	movs	r0, r3
  800088c:	f7ff ffc8 	bl	8000820 <lcd_send_string>
@@ -1284,7 +1284,7 @@ int main(void)
  8000964:	2100      	movs	r1, #0
  8000966:	2000      	movs	r0, #0
  8000968:	f7ff fefd 	bl	8000766 <lcd_put_cur>
-	  lcd_send_string ("RAW TEMP:");
+	  lcd_send_string ("State A");
  800096c:	4b1b      	ldr	r3, [pc, #108]	; (80009dc <main+0x190>)
  800096e:	0018      	movs	r0, r3
  8000970:	f7ff ff56 	bl	8000820 <lcd_send_string>
@@ -1292,7 +1292,7 @@ int main(void)
  8000974:	2100      	movs	r1, #0
  8000976:	2001      	movs	r0, #1
  8000978:	f7ff fef5 	bl	8000766 <lcd_put_cur>
-	  sprintf(msg, "0x%02X 0x%02X 0x%02X", TMP_B2, TMP_B1, TMP_B0);
+	  sprintf(msg, "Temp:%02XH%02XH%02XH", TMP_B2, TMP_B1, TMP_B0);
  800097c:	1dbb      	adds	r3, r7, #6
  800097e:	781a      	ldrb	r2, [r3, #0]
  8000980:	1d7b      	adds	r3, r7, #5
@@ -1325,16 +1325,16 @@ int main(void)
  80009b4:	e7a6      	b.n	8000904 <main+0xb8>
  80009b6:	46c0      	nop			; (mov r8, r8)
  80009b8:	08004e48 	.word	0x08004e48
- 80009bc:	08004e54 	.word	0x08004e54
+ 80009bc:	08004e5c 	.word	0x08004e5c
  80009c0:	200000a4 	.word	0x200000a4
  80009c4:	200001a8 	.word	0x200001a8
- 80009c8:	08004e60 	.word	0x08004e60
+ 80009c8:	08004e6c 	.word	0x08004e6c
  80009cc:	200001b8 	.word	0x200001b8
  80009d0:	200000f8 	.word	0x200000f8
- 80009d4:	08004e88 	.word	0x08004e88
- 80009d8:	08004ea0 	.word	0x08004ea0
- 80009dc:	08004ec4 	.word	0x08004ec4
- 80009e0:	08004ed0 	.word	0x08004ed0
+ 80009d4:	08004e94 	.word	0x08004e94
+ 80009d8:	08004eac 	.word	0x08004eac
+ 80009dc:	08004ed0 	.word	0x08004ed0
+ 80009e0:	08004ed8 	.word	0x08004ed8
 
 080009e4 <SystemClock_Config>:
 /**
@@ -1874,7 +1874,7 @@ static void MX_GPIO_Init(void)
  8000cec:	200000f8 	.word	0x200000f8
  8000cf0:	200000a4 	.word	0x200000a4
  8000cf4:	20000000 	.word	0x20000000
- 8000cf8:	08004ee8 	.word	0x08004ee8
+ 8000cf8:	08004ef0 	.word	0x08004ef0
  8000cfc:	2000018c 	.word	0x2000018c
  8000d00:	20000020 	.word	0x20000020
 
@@ -2841,7 +2841,7 @@ LoopForever:
   ldr r1, =_edata
  80011b4:	20000088 	.word	0x20000088
   ldr r2, =_sidata
- 80011b8:	08004fbc 	.word	0x08004fbc
+ 80011b8:	08004fc4 	.word	0x08004fc4
   ldr r2, =_sbss
  80011bc:	20000088 	.word	0x20000088
   ldr r4, =_ebss
@@ -8841,7 +8841,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
  800320c:	40021000 	.word	0x40021000
  8003210:	fffff0ff 	.word	0xfffff0ff
  8003214:	ffff8fff 	.word	0xffff8fff
- 8003218:	08004ef0 	.word	0x08004ef0
+ 8003218:	08004ef8 	.word	0x08004ef8
  800321c:	2000002c 	.word	0x2000002c
  8003220:	20000030 	.word	0x20000030
 
@@ -9079,7 +9079,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  800335e:	46bd      	mov	sp, r7
  8003360:	bdb0      	pop	{r4, r5, r7, pc}
  8003362:	46c0      	nop			; (mov r8, r8)
- 8003364:	08004f30 	.word	0x08004f30
+ 8003364:	08004f38 	.word	0x08004f38
 
 08003368 <HAL_RCCEx_PeriphCLKConfig>:
   *         the RTC clock source: in this case the access to Backup domain is enabled.
@@ -10613,7 +10613,7 @@ HAL_StatusTypeDef UART_SetConfig(UART_HandleTypeDef *huart)
  8003bd8:	40004800 	.word	0x40004800
  8003bdc:	40004c00 	.word	0x40004c00
  8003be0:	00f42400 	.word	0x00f42400
- 8003be4:	08004f50 	.word	0x08004f50
+ 8003be4:	08004f58 	.word	0x08004f58
       }
       else
       {
@@ -11007,7 +11007,7 @@ HAL_StatusTypeDef UART_SetConfig(UART_HandleTypeDef *huart)
  8003e3a:	46bd      	mov	sp, r7
  8003e3c:	b010      	add	sp, #64	; 0x40
  8003e3e:	bdb0      	pop	{r4, r5, r7, pc}
- 8003e40:	08004f50 	.word	0x08004f50
+ 8003e40:	08004f58 	.word	0x08004f58
  8003e44:	00f42400 	.word	0x00f42400
 
 08003e48 <UART_AdvFeatureConfig>:
@@ -12228,8 +12228,8 @@ static void UARTEx_SetNbDataToProcess(UART_HandleTypeDef *huart)
  80044d6:	b005      	add	sp, #20
  80044d8:	bdf0      	pop	{r4, r5, r6, r7, pc}
  80044da:	46c0      	nop			; (mov r8, r8)
- 80044dc:	08004f68 	.word	0x08004f68
- 80044e0:	08004f70 	.word	0x08004f70
+ 80044dc:	08004f70 	.word	0x08004f70
+ 80044e0:	08004f78 	.word	0x08004f78
 
 080044e4 <siprintf>:
  80044e4:	b40e      	push	{r1, r2, r3}
@@ -12306,10 +12306,10 @@ static void UARTEx_SetNbDataToProcess(UART_HandleTypeDef *huart)
  8004572:	4798      	blx	r3
  8004574:	3601      	adds	r6, #1
  8004576:	e7f2      	b.n	800455e <__libc_init_array+0x1e>
- 8004578:	08004fb4 	.word	0x08004fb4
- 800457c:	08004fb4 	.word	0x08004fb4
- 8004580:	08004fb8 	.word	0x08004fb8
- 8004584:	08004fb4 	.word	0x08004fb4
+ 8004578:	08004fbc 	.word	0x08004fbc
+ 800457c:	08004fbc 	.word	0x08004fbc
+ 8004580:	08004fc0 	.word	0x08004fc0
+ 8004584:	08004fbc 	.word	0x08004fbc
 
 08004588 <__retarget_lock_acquire_recursive>:
  8004588:	4770      	bx	lr
@@ -12898,9 +12898,9 @@ static void UARTEx_SetNbDataToProcess(UART_HandleTypeDef *huart)
  8004a30:	9803      	ldr	r0, [sp, #12]
  8004a32:	f000 f87b 	bl	8004b2c <_printf_i>
  8004a36:	e7ea      	b.n	8004a0e <_svfiprintf_r+0x1c2>
- 8004a38:	08004f78 	.word	0x08004f78
- 8004a3c:	08004f7e 	.word	0x08004f7e
- 8004a40:	08004f82 	.word	0x08004f82
+ 8004a38:	08004f80 	.word	0x08004f80
+ 8004a3c:	08004f86 	.word	0x08004f86
+ 8004a40:	08004f8a 	.word	0x08004f8a
  8004a44:	00000000 	.word	0x00000000
  8004a48:	08004789 	.word	0x08004789
 
@@ -13273,8 +13273,8 @@ static void UARTEx_SetNbDataToProcess(UART_HandleTypeDef *huart)
  8004d3e:	2500      	movs	r5, #0
  8004d40:	e7f7      	b.n	8004d32 <_printf_i+0x206>
  8004d42:	46c0      	nop			; (mov r8, r8)
- 8004d44:	08004f89 	.word	0x08004f89
- 8004d48:	08004f9a 	.word	0x08004f9a
+ 8004d44:	08004f91 	.word	0x08004f91
+ 8004d48:	08004fa2 	.word	0x08004fa2
 
 08004d4c <memmove>:
  8004d4c:	b510      	push	{r4, lr}
