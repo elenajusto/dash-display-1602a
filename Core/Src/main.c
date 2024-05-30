@@ -151,17 +151,30 @@ int main(void)
   while (1)
   {
 	  /* Reading Raw Temperature */
-	  uint8_t TMP_B2 = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_TMP_B2_ADDR);
-	  uint8_t TMP_B1 = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_TMP_B1_ADDR);
-	  uint8_t TMP_B0 = SPL06_007_getRegisterValue(&pressureSensor, SPL06_REG_TMP_B0_ADDR);
-	  sprintf(msg, "RAW TEMP: 0x%02X 0x%02X 0x%02X\r\n", TMP_B2, TMP_B1, TMP_B0);
+	  uint32_t rawTemp = SPL06_007_getRawTemp(&pressureSensor);
+	  sprintf(msg, "RAW TEMP: %d\r\n", rawTemp);
+	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+
+	  /* Reading Compensated Temperature */
+	  uint32_t compTemp = SPL06_007_calcCompTemp(&pressureSensor, rawTemp);
+	  sprintf(msg, "COMP TEMP: %d\r\n", compTemp);
+	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+
+	  /* DEBUG - Print coefficient 0 */
+	  int16_t  c0 = SPL06_007_getSplitHighCoefficient(&pressureSensor, SPL06_REG_C0, SPL06_REG_C01C1);
+	  sprintf(msg, "C0: 0x%02X\r\n", c0);
+	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
+
+	  /* DEBUG - Print coefficient 1 */
+	  int16_t  c1 = SPL06_007_getSplitLowCoefficient(&pressureSensor, SPL06_REG_C01C1, SPL06_REG_C1);
+	  sprintf(msg, "C1: 0x%02X\r\n", c1);
 	  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 
 	  /* LCD Messaging */
 	  lcd_put_cur(0, 0);
 	  lcd_send_string ("State A");
 	  lcd_put_cur(1, 0);
-	  sprintf(msg, "Temp:%02XH%02XH%02XH", TMP_B2, TMP_B1, TMP_B0);
+	  sprintf(msg, "Temp: %d", rawTemp);
 	  lcd_send_string (msg);
 	  HAL_Delay(1000);
 	  lcd_clear ();

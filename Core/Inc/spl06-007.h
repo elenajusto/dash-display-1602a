@@ -88,7 +88,7 @@ typedef struct {
 	float compensatedTemperature;
 
 	/* Scale Factor */
-	uint16_t scaleFactor;
+	int scaleFactor;
 
 } SPL06_007;
 
@@ -101,14 +101,17 @@ uint8_t SPL06_007_Initialise( SPL06_007 *dev, I2C_HandleTypeDef *i2cHandle );
  * DATA ACQUISITION
  */
 uint8_t SPL06_007_calcCompPressure( SPL06_007 *dev );
-uint8_t SPL06_007_calcCompTemp( SPL06_007 *dev );
+uint8_t SPL06_007_calcCompTemp( SPL06_007 *dev, int32_t rawTemp );
 uint8_t SPL06_007_getRawPressure( SPL06_007 *dev );
-uint8_t SPL06_007_getRawTemp( SPL06_007 *dev );
+int32_t SPL06_007_getRawTemp( SPL06_007 *dev );
 
+int16_t SPL06_007_getSplitHighCoefficient( SPL06_007 *dev, uint8_t regHigh, uint8_t regLow);
+int16_t SPL06_007_getSplitLowCoefficient( SPL06_007 *dev, uint8_t regHigh, uint8_t regLow);
 
 /*
  * LOW-LEVEL FUNCTIONS
  */
+uint16_t read_12_bit_value(uint8_t high_byte, uint8_t low_byte);
 uint8_t SPL06_007_getRegisterValue( SPL06_007 *dev, uint8_t reg );
 HAL_StatusTypeDef SPL06_007_ReadRegister( SPL06_007 *dev, uint8_t reg, uint8_t *data );
 HAL_StatusTypeDef SPL06_007_WriteRegister( SPL06_007 *dev, uint8_t reg, uint8_t *data );

@@ -75,21 +75,70 @@ uint8_t SPL06_007_calcCompPressure( SPL06_007 *dev ){
 
 }
 
-uint8_t SPL06_007_calcCompTemp( SPL06_007 *dev ){
+uint8_t SPL06_007_calcCompTemp( SPL06_007 *dev, int32_t rawTemp ){
+	uint8_t compTemp;
+	int16_t c0 = SPL06_007_getSplitHighCoefficient(dev, SPL06_REG_C0, SPL06_REG_C01C1);
+	int16_t c1 = SPL06_007_getSplitLowCoefficient(dev, SPL06_REG_C01C1, SPL06_REG_C1);
 
+	compTemp = rawTemp / 2088960;
+
+	compTemp = ((c0 * 0.5) + (c1 * compTemp));
 }
 
 uint8_t SPL06_007_getRawPressure( SPL06_007 *dev ){
 
 }
 
-uint8_t SPL06_007_getRawTemp( SPL06_007 *dev ){
+int32_t SPL06_007_getRawTemp( SPL06_007 *dev ){
+	int32_t rawTemp;
 
+	uint8_t TMP_B2 = SPL06_007_getRegisterValue(dev, SPL06_REG_TMP_B2_ADDR);
+	uint8_t TMP_B1 = SPL06_007_getRegisterValue(dev, SPL06_REG_TMP_B1_ADDR);
+	uint8_t TMP_B0 = SPL06_007_getRegisterValue(dev, SPL06_REG_TMP_B0_ADDR);
+
+	rawTemp = (TMP_B2 << 8) | TMP_B1;
+	rawTemp = (rawTemp << 8) | TMP_B0;
+
+	if(rawTemp & (1 << 23))
+		rawTemp = rawTemp | 0XFF000000; // Set left bits to one for 2's complement conversion of negitive number
+
+
+	return rawTemp;
+
+}
+
+int16_t SPL06_007_getSplitHighCoefficient( SPL06_007 *dev, uint8_t regHigh, uint8_t regLow){
+
+	uint8_t cHigh = SPL06_007_getRegisterValue(dev, regHigh);
+	uint8_t cLow = (SPL06_007_getRegisterValue(dev, regLow) >> 4);
+
+	int16_t c = read_12_bit_value(cHigh, cLow);
+	return c;
+}
+
+int16_t SPL06_007_getSplitLowCoefficient( SPL06_007 *dev, uint8_t regHigh, uint8_t regLow){
+
+	uint8_t cHigh = SPL06_007_getRegisterValue(dev, regHigh);
+	uint8_t cLow = (SPL06_007_getRegisterValue(dev, regLow) & 0x0F);
+
+	int16_t c = read_12_bit_value(cHigh, cLow);
+	if(c & (1 << 11)) 		// Check for 2's complement negative number
+	    c = c | 0XF000; 	// Set left bits to one for 2's complement conversion of negitive number
+
+	return c;
 }
 
 /*
  * LOW-LEVEL FUNCTIONS
  */
+uint16_t read_12_bit_value(uint8_t high_byte, uint8_t low_byte) {
+
+    /* Combine the high_byte and low_byte to form the 12-bit value */
+    uint16_t value = (high_byte << 4) | low_byte;
+
+    return value;
+}
+
 uint8_t SPL06_007_getRegisterValue( SPL06_007 *dev, uint8_t reg ){
 
 	uint8_t regData;
