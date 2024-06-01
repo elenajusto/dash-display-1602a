@@ -31,10 +31,14 @@
 #include "fonts.h"
 #include "bitmap.h"
 #include "horse_anim.h"
+#include "utsmabitmap.h"
 
 /* Standard C Includes */
 #include "stdio.h"
 #include "string.h"
+
+/* Utility Includes*/
+#include "i2cScanner.h"
 
 /* USER CODE END Includes */
 
@@ -69,18 +73,10 @@ static void MX_USART2_UART_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 
-	void i2cScanner();
-
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
-	/* I2C Scanner Variables */
-	uint8_t Buffer[25] = {0};
-	uint8_t Space[] = " - ";
-	uint8_t StartMSG[] = "Starting I2C Scanning: \r\n";
-	uint8_t EndMSG[] = "Done! \r\n\r\n";
 
 	/* I2C LCD Variables */
 	int row=0;
@@ -155,12 +151,25 @@ int main(void)
 	  HAL_Delay(2000);
 	  lcd_clear ();
 
-	  /* OLED Welcome */
-	  SSD1306_GotoXY (0,0);
-	  SSD1306_Puts ("HELLO", &Font_11x18, 1);
-	  SSD1306_GotoXY (10, 30);
-	  SSD1306_Puts ("  WORLD :)", &Font_11x18, 1);
-	  SSD1306_UpdateScreen(); //display
+	  /* OLED UTSMA Logo */
+	  SSD1306_DrawBitmap(0,0,utsma, 128, 64, 1);
+	  SSD1306_UpdateScreen();
+
+	  HAL_Delay(2000);
+
+	  /* OLED Scrolling */
+	  SSD1306_ScrollRight(0x00, 0x0f);     // scroll entire screen right
+	  HAL_Delay (2000);
+	  SSD1306_ScrollLeft(0x00, 0x0f);  	   // scroll entire screen left
+	  HAL_Delay (2000);
+	  SSD1306_Scrolldiagright(0x00, 0x0f); // scroll entire screen diagonal right
+	  HAL_Delay (2000);
+	  SSD1306_Scrolldiagleft(0x00, 0x0f);  // scroll entire screen diagonal left
+	  HAL_Delay (2000);
+	  SSD1306_Stopscroll();   			   // stop scrolling
+	  SSD1306_InvertDisplay(1);   		   // invert the display
+	  HAL_Delay(2000);
+	  SSD1306_InvertDisplay(0);  		   // normalize the display
 
   /* USER CODE END 2 */
 
@@ -198,52 +207,50 @@ int main(void)
 	  lcd_clear ();
 
 	  //// HORSE ANIMATION START //////
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse1,128,64,1);
+	  SSD1306_UpdateScreen();
 
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse1,128,64,1);
-	  	  SSD1306_UpdateScreen();
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse2,128,64,1);
+	  SSD1306_UpdateScreen();
 
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse2,128,64,1);
-	  	  SSD1306_UpdateScreen();
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse3,128,64,1);
+	  SSD1306_UpdateScreen();
 
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse3,128,64,1);
-	  	  SSD1306_UpdateScreen();
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse4,128,64,1);
+	  SSD1306_UpdateScreen();
 
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse4,128,64,1);
-	  	  SSD1306_UpdateScreen();
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse5,128,64,1);
+	  SSD1306_UpdateScreen();
 
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse5,128,64,1);
-	  	  SSD1306_UpdateScreen();
-
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse6,128,64,1);
-	  	  SSD1306_UpdateScreen();
-
-
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse7,128,64,1);
-	  	  SSD1306_UpdateScreen();
-
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse8,128,64,1);
-	  	  SSD1306_UpdateScreen();
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse6,128,64,1);
+	  SSD1306_UpdateScreen();
 
 
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse9,128,64,1);
-	  	  SSD1306_UpdateScreen();
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse7,128,64,1);
+	  SSD1306_UpdateScreen();
+
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse8,128,64,1);
+	  SSD1306_UpdateScreen();
 
 
-	  	  SSD1306_Clear();
-	  	  SSD1306_DrawBitmap(0,0,horse10,128,64,1);
-	  	  SSD1306_UpdateScreen();
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse9,128,64,1);
+	  SSD1306_UpdateScreen();
 
 
-	  	  //// HORSE ANIMATION ENDS //////
+	  SSD1306_Clear();
+	  SSD1306_DrawBitmap(0,0,horse10,128,64,1);
+	  SSD1306_UpdateScreen();
+	  //// HORSE ANIMATION ENDS //////
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -420,24 +427,6 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 
-	void i2cScanner(){
-		uint8_t i = 0, ret;
-		HAL_UART_Transmit(&huart2, StartMSG, sizeof(StartMSG), 10000);
-		for(i=1; i<128; i++)
-		{
-			ret = HAL_I2C_IsDeviceReady(&hi2c1, (uint16_t)(i<<1), 3, 5);
-			if (ret != HAL_OK) /* No ACK Received At That Address */
-			{
-				HAL_UART_Transmit(&huart2, Space, sizeof(Space), 10000);
-			}
-			else if(ret == HAL_OK)
-			{
-				sprintf(Buffer, "0x%X", i);
-				HAL_UART_Transmit(&huart2, Buffer, sizeof(Buffer), 10000);
-			}
-		}
-		HAL_UART_Transmit(&huart2, EndMSG, sizeof(EndMSG), 10000);
-	}
 
 /* USER CODE END 4 */
 

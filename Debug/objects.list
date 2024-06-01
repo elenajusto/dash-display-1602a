@@ -1,5 +1,6 @@
 "./Core/Src/fonts.o"
 "./Core/Src/i2c-lcd.o"
+"./Core/Src/i2cScanner.o"
 "./Core/Src/main.o"
 "./Core/Src/spl06-007.o"
 "./Core/Src/ssd1306.o"
