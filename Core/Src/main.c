@@ -18,13 +18,21 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+/* Component includes */
 #include "spl06-007.h"
-
 #include "i2c-lcd.h"
+#include "ssd1306.h"
 
+/* OLED Driver Includes */
+#include "fonts.h"
+#include "bitmap.h"
+#include "horse_anim.h"
+
+/* Standard C Includes */
 #include "stdio.h"
 #include "string.h"
 
@@ -121,16 +129,11 @@ int main(void)
   	  /* Start I2C Scan */
   	  i2cScanner();
 
+  	  /* OLED Initialise */
+	  SSD1306_Init();
+
   	  /* LCD Init */
   	  lcd_init();
-
-  	  /* LCD Messaging */
-	  lcd_send_string ("Design Challenge");
-	  HAL_Delay(500);
-	  lcd_put_cur(1, 0);
-	  lcd_send_string("Vehicle Online");
-	  HAL_Delay(2000);
-	  lcd_clear ();
 
 	  /* Initialise pressure sensor */
 	  uint8_t ret = SPL06_007_Initialise( &pressureSensor, &hi2c1 );
@@ -143,6 +146,21 @@ int main(void)
 		  sprintf(msg, "Number of errors: %d\r\n", ret);
 		  HAL_UART_Transmit(&huart2, (uint8_t*) msg, strlen(msg), HAL_MAX_DELAY);
 	  }
+
+	  /* LCD Welcome */
+	  lcd_send_string ("Design Challenge");
+	  HAL_Delay(500);
+	  lcd_put_cur(1, 0);
+	  lcd_send_string("Vehicle Online");
+	  HAL_Delay(2000);
+	  lcd_clear ();
+
+	  /* OLED Welcome */
+	  SSD1306_GotoXY (0,0);
+	  SSD1306_Puts ("HELLO", &Font_11x18, 1);
+	  SSD1306_GotoXY (10, 30);
+	  SSD1306_Puts ("  WORLD :)", &Font_11x18, 1);
+	  SSD1306_UpdateScreen(); //display
 
   /* USER CODE END 2 */
 
@@ -179,8 +197,53 @@ int main(void)
 	  HAL_Delay(1000);
 	  lcd_clear ();
 
-	  HAL_Delay(500);
+	  //// HORSE ANIMATION START //////
 
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse1,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse2,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse3,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse4,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse5,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse6,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse7,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse8,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse9,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+
+	  	  SSD1306_Clear();
+	  	  SSD1306_DrawBitmap(0,0,horse10,128,64,1);
+	  	  SSD1306_UpdateScreen();
+
+
+	  	  //// HORSE ANIMATION ENDS //////
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -244,7 +307,7 @@ static void MX_I2C1_Init(void)
 
   /* USER CODE END I2C1_Init 1 */
   hi2c1.Instance = I2C1;
-  hi2c1.Init.Timing = 0x00303D5B;
+  hi2c1.Init.Timing = 0x0010061A;
   hi2c1.Init.OwnAddress1 = 0;
   hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
