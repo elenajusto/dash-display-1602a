@@ -75,14 +75,16 @@ uint8_t SPL06_007_calcCompPressure( SPL06_007 *dev ){
 
 }
 
-uint8_t SPL06_007_calcCompTemp( SPL06_007 *dev, int32_t rawTemp ){
-	uint8_t compTemp;
+uint32_t SPL06_007_calcCompTemp( SPL06_007 *dev, int32_t rawTemp ){
+	uint32_t compTemp;
 	int16_t c0 = SPL06_007_getSplitHighCoefficient(dev, SPL06_REG_C0, SPL06_REG_C01C1);
 	int16_t c1 = SPL06_007_getSplitLowCoefficient(dev, SPL06_REG_C01C1, SPL06_REG_C1);
 
 	compTemp = rawTemp / 2088960;
 
-	compTemp = ((c0 * 0.5) + (c1 * compTemp));
+	compTemp = (int32_t)((c0 * 0.5) + (c1 * compTemp));
+
+	return (int32_t)compTemp;
 }
 
 uint8_t SPL06_007_getRawPressure( SPL06_007 *dev ){

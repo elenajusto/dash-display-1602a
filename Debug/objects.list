@@ -1,6 +1,7 @@
 "./Core/Src/i2c-lcd.o"
 "./Core/Src/main.o"
 "./Core/Src/spl06-007.o"
+"./Core/Src/ssd1306.o"
 "./Core/Src/stm32g0xx_hal_msp.o"
 "./Core/Src/stm32g0xx_it.o"
 "./Core/Src/syscalls.o"
