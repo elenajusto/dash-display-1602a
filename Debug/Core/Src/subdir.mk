@@ -5,6 +5,8 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Core/Src/ST7920_SERIAL.c \
+../Core/Src/delay.c \
 ../Core/Src/fonts.c \
 ../Core/Src/i2c-lcd.c \
 ../Core/Src/i2cScanner.c \
@@ -18,6 +20,8 @@ C_SRCS += \
 ../Core/Src/system_stm32g0xx.c 
 
 OBJS += \
+./Core/Src/ST7920_SERIAL.o \
+./Core/Src/delay.o \
 ./Core/Src/fonts.o \
 ./Core/Src/i2c-lcd.o \
 ./Core/Src/i2cScanner.o \
@@ -31,6 +35,8 @@ OBJS += \
 ./Core/Src/system_stm32g0xx.o 
 
 C_DEPS += \
+./Core/Src/ST7920_SERIAL.d \
+./Core/Src/delay.d \
 ./Core/Src/fonts.d \
 ./Core/Src/i2c-lcd.d \
 ./Core/Src/i2cScanner.d \
@@ -51,7 +57,7 @@ Core/Src/%.o Core/Src/%.su Core/Src/%.cyclo: ../Core/Src/%.c Core/Src/subdir.mk
 clean: clean-Core-2f-Src
 
 clean-Core-2f-Src:
-	-$(RM) ./Core/Src/fonts.cyclo ./Core/Src/fonts.d ./Core/Src/fonts.o ./Core/Src/fonts.su ./Core/Src/i2c-lcd.cyclo ./Core/Src/i2c-lcd.d ./Core/Src/i2c-lcd.o ./Core/Src/i2c-lcd.su ./Core/Src/i2cScanner.cyclo ./Core/Src/i2cScanner.d ./Core/Src/i2cScanner.o ./Core/Src/i2cScanner.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/spl06-007.cyclo ./Core/Src/spl06-007.d ./Core/Src/spl06-007.o ./Core/Src/spl06-007.su ./Core/Src/ssd1306.cyclo ./Core/Src/ssd1306.d ./Core/Src/ssd1306.o ./Core/Src/ssd1306.su ./Core/Src/stm32g0xx_hal_msp.cyclo ./Core/Src/stm32g0xx_hal_msp.d ./Core/Src/stm32g0xx_hal_msp.o ./Core/Src/stm32g0xx_hal_msp.su ./Core/Src/stm32g0xx_it.cyclo ./Core/Src/stm32g0xx_it.d ./Core/Src/stm32g0xx_it.o ./Core/Src/stm32g0xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32g0xx.cyclo ./Core/Src/system_stm32g0xx.d ./Core/Src/system_stm32g0xx.o ./Core/Src/system_stm32g0xx.su
+	-$(RM) ./Core/Src/ST7920_SERIAL.cyclo ./Core/Src/ST7920_SERIAL.d ./Core/Src/ST7920_SERIAL.o ./Core/Src/ST7920_SERIAL.su ./Core/Src/delay.cyclo ./Core/Src/delay.d ./Core/Src/delay.o ./Core/Src/delay.su ./Core/Src/fonts.cyclo ./Core/Src/fonts.d ./Core/Src/fonts.o ./Core/Src/fonts.su ./Core/Src/i2c-lcd.cyclo ./Core/Src/i2c-lcd.d ./Core/Src/i2c-lcd.o ./Core/Src/i2c-lcd.su ./Core/Src/i2cScanner.cyclo ./Core/Src/i2cScanner.d ./Core/Src/i2cScanner.o ./Core/Src/i2cScanner.su ./Core/Src/main.cyclo ./Core/Src/main.d ./Core/Src/main.o ./Core/Src/main.su ./Core/Src/spl06-007.cyclo ./Core/Src/spl06-007.d ./Core/Src/spl06-007.o ./Core/Src/spl06-007.su ./Core/Src/ssd1306.cyclo ./Core/Src/ssd1306.d ./Core/Src/ssd1306.o ./Core/Src/ssd1306.su ./Core/Src/stm32g0xx_hal_msp.cyclo ./Core/Src/stm32g0xx_hal_msp.d ./Core/Src/stm32g0xx_hal_msp.o ./Core/Src/stm32g0xx_hal_msp.su ./Core/Src/stm32g0xx_it.cyclo ./Core/Src/stm32g0xx_it.d ./Core/Src/stm32g0xx_it.o ./Core/Src/stm32g0xx_it.su ./Core/Src/syscalls.cyclo ./Core/Src/syscalls.d ./Core/Src/syscalls.o ./Core/Src/syscalls.su ./Core/Src/sysmem.cyclo ./Core/Src/sysmem.d ./Core/Src/sysmem.o ./Core/Src/sysmem.su ./Core/Src/system_stm32g0xx.cyclo ./Core/Src/system_stm32g0xx.d ./Core/Src/system_stm32g0xx.o ./Core/Src/system_stm32g0xx.su
 
 .PHONY: clean-Core-2f-Src
 
