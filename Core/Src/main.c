@@ -29,14 +29,8 @@
 
 /* OLED Driver Includes */
 #include "fonts.h"
-#include "bitmap.h"
 #include "horse_anim.h"
 #include "utsmabitmap.h"
-
-/* Big LCD Driver Includes */
-#include "ST7920_SERIAL.h"
-#include "delay.h"
-#include "bitmap.h"
 
 /* Standard C Includes */
 #include "stdio.h"
@@ -179,36 +173,6 @@ int main(void)
 	  SSD1306_InvertDisplay(1);   		   // invert the display
 	  HAL_Delay(2000);
 	  SSD1306_InvertDisplay(0);  		   // normalize the display
-
-	  /* Big LCD Code */
-	  delay_init();
-
-	  ST7920_Init();
-	  ST7920_SendString(0,0, "HELLO WORLD");
-	  ST7920_SendString(1,0, "FROM");
-	  ST7920_SendString(2,0, "CONTROLLERSTECH");
-	  ST7920_SendString(3,0, "1234567890!@#$%^");
-	  HAL_Delay(2000);
-	  ST7920_Clear();
-	  ST7920_GraphicMode(1);
-	  ST7920_DrawBitmap(utsma);
-	  HAL_Delay(2000);
-	  ST7920_Clear();
-	  ST7920_DrawBitmap(logo);
-	  ST7920_Clear();
-	  HAL_Delay(100);
-	  DrawCircle(110, 31, 12);
-	  DrawCircle(110, 31, 16);
-	  DrawLine(3, 60, 127, 33);
-	  ST7920_Update();
-	  DrawRectangle (100, 12, 20, 14);
-	  ST7920_Update();
-	  DrawFilledRectangle(30, 20, 30, 10);
-	  ST7920_Update();
-	  DrawFilledCircle(15, 30, 6);
-	  ST7920_Update();
-	  DrawFilledTriangle(1,5,10,5,6,15);
-	  ST7920_Update();
 
   /* USER CODE END 2 */
 
@@ -498,14 +462,24 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_GREEN_GPIO_Port, LED_GREEN_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7, GPIO_PIN_RESET);
 
-  /*Configure GPIO pin : LED_GREEN_Pin */
-  GPIO_InitStruct.Pin = LED_GREEN_Pin;
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PA5 PA6 PA7 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
-  HAL_GPIO_Init(LED_GREEN_GPIO_Port, &GPIO_InitStruct);
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB0 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
